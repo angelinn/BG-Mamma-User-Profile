@@ -6,7 +6,7 @@
         {
             "taskName": "build",
             "type": "shell",
-            "command": "ruby ${workspaceRoot}/src/crawler/main.rb",
+            "command": "ruby /mnt/d/Repositories/BG-Mamma-User-Profile/src/crawler/main.rb",
             "group": {
                 "kind": "build",
                 "isDefault": true
