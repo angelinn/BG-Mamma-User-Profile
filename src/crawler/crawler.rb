@@ -12,9 +12,12 @@ class BgMammaCrawler
 
     def crawl
         categories = get_categories
-        topics = get_topics([categories.first])
-        #topics.each { |t| get_comments(t) }
-        puts get_comments(topics.first).first
+        puts "Got #{categories.count} categories."
+        categories.each do |c|
+            c.topics = get_topics(c)
+            c.topics.each { |t| t.comments = get_comments(t); break }
+            break
+        end
     end
 
     def get_categories
@@ -22,25 +25,24 @@ class BgMammaCrawler
 
         page = Nokogiri::HTML(open(BASE_URL))
         page.css('li.uk-parent a').select { |n| n['href'].include?('board') }
+                                  .map    { |c| Category.new(c['href'])}
     end
 
-    def get_topics(categories)
-        categories.map do |c|
-            puts "Getting topics for #{c['href']}"
-            category = Nokogiri::HTML(open("#{BASE_URL}#{c['href']}"))
-            topics = []
+    def get_topics(c)
+        puts "Getting topics for #{c.url}"
+        category = Nokogiri::HTML(open("#{BASE_URL}#{c.url}"))
+        topics = []
 
-            loop do
-                page = category.css('li.uk-active').first            
-                topics << category.css('p.topic-title a').map { |t| Topic.new(c['href'], t['href']) } 
-                break unless page.next['uk-disabled'].nil?
+        loop do
+            page = category.css('li.uk-active').first            
+            topics << category.css('p.topic-title a').map { |t| Topic.new(c.url, t['href']) } 
+            break unless page.next['uk-disabled'].nil?
 
-                puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
-                category = Nokogiri::HTML(open("#{BASE_URL}#{page.next.css('a').first['href']}"))
-                break
-            end
-            topics
-        end.flatten
+            puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
+            category = Nokogiri::HTML(open("#{BASE_URL}#{page.next.css('a').first['href']}"))
+            break
+        end
+        topics.flatten
     end
 
     def get_comments(topic)
