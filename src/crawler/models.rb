@@ -23,3 +23,17 @@ class Comment
         self.topic = topic
     end
 end
+
+class User
+    attr_accessor :profile_url
+    attr_accessor :user_name
+
+    def initialize(url, name)
+        self.profile_url = url
+        self.user_name = name
+    end
+
+    def to_s
+        "#{self.user_name} - #{self.profile_url}\n"
+    end
+end
