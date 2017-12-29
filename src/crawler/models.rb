@@ -24,11 +24,23 @@ class Comment
     attr_accessor :user
     attr_accessor :content
     attr_accessor :date
+    attr_accessor :quotes
 
-    def initialize(user, content, date)
+    def initialize(user, content, date, quotes)
         self.user = user
         self.content = content
         self.date = date
+        self.quotes = quotes
+    end
+end
+
+class Quote
+    attr_accessor :quoter
+    attr_accessor :content
+
+    def initialize(quoter, content)
+        self.quoter = quoter
+        self.content = content
     end
 end
 
