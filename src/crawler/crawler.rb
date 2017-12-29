@@ -1,4 +1,5 @@
 require_relative 'models'
+require_relative 'serializer'
 
 require 'nokogiri'
 require 'open-uri'
@@ -18,6 +19,8 @@ class BgMammaCrawler
             c.topics.each { |t| t.comments = get_comments(t); break }
             break
         end
+
+        JsonSerializer.serialize categories
     end
 
     def get_categories
@@ -35,7 +38,7 @@ class BgMammaCrawler
 
         loop do
             page = category.css('li.uk-active').first            
-            topics << category.css('p.topic-title a').map { |t| Topic.new(c.url, t['href']) } 
+            topics << category.css('p.topic-title a').map { |t| Topic.new(t['href']) } 
             break unless page.next['uk-disabled'].nil?
 
             puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
@@ -55,7 +58,7 @@ class BgMammaCrawler
             content = post.css('div.post-content-inner').first.text.strip
             date = post.css('span.post-date').text
 
-            Comment.new(user, content, topic, date)
+            Comment.new(user, content, date)
         end
     end
 end

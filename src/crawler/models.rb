@@ -8,12 +8,10 @@ class Category
 end
 
 class Topic
-    attr_accessor :parent
     attr_accessor :url
     attr_accessor :comments
 
-    def initialize(parent, url)
-        self.parent = parent
+    def initialize(url)
         self.url = url
     end
 
@@ -25,13 +23,11 @@ end
 class Comment
     attr_accessor :user
     attr_accessor :content
-    attr_accessor :topic
     attr_accessor :date
 
-    def initialize(user, content, topic, date)
+    def initialize(user, content, date)
         self.user = user
         self.content = content
-        self.topic = topic
         self.date = date
     end
 end
