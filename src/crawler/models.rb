@@ -1,6 +1,16 @@
+class Category
+    attr_accessor :topics
+    attr_accessor :url
+
+    def initialize(url)
+        self.url = url
+    end
+end
+
 class Topic
     attr_accessor :parent
     attr_accessor :url
+    attr_accessor :comments
 
     def initialize(parent, url)
         self.parent = parent
@@ -25,7 +35,7 @@ class Comment
         self.date = date
     end
 end
-    
+
 class User
     attr_accessor :profile_url
     attr_accessor :user_name
