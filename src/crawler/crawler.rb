@@ -14,7 +14,7 @@ class BgMammaCrawler
         categories = get_categories
         topics = get_topics([categories.first])
         #topics.each { |t| get_comments(t) }
-        get_comments(topics.first)
+        puts get_comments(topics.first).first
     end
 
     def get_categories
@@ -46,14 +46,14 @@ class BgMammaCrawler
     def get_comments(topic)
         topic_url = "#{BASE_URL}#{topic.url}"
         puts "Getting comments for #{topic_url}"
-        html = Nokogiri::HTML(open(topic_url))
-        
-        comments = []
-        html.css('div.topic-post.tpl3').each do |post|
+
+        Nokogiri::HTML(open(topic_url)).css('div.topic-post.tpl3').map do |post|
             user_name = post.css('p.user-name a').first
             user = User.new(user_name['href'], user_name.text.strip)
+            content = post.css('div.post-content-inner').first.text.strip
+            date = post.css('span.post-date').text
 
-            puts user
+            Comment.new(user, content, topic, date)
         end
     end
 end
