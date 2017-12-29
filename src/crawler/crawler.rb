@@ -12,7 +12,9 @@ class BgMammaCrawler
 
     def crawl
         categories = get_categories
-        get_topics([categories.first]).each { |n| puts n }
+        topics = get_topics([categories.first])
+        #topics.each { |t| get_comments(t) }
+        get_comments(topics.first)
     end
 
     def get_categories
@@ -25,9 +27,7 @@ class BgMammaCrawler
     def get_topics(categories)
         categories.map do |c|
             puts "Getting topics for #{c['href']}"
-
             category = Nokogiri::HTML(open("#{BASE_URL}#{c['href']}"))
-
             topics = []
 
             loop do
@@ -37,8 +37,23 @@ class BgMammaCrawler
 
                 puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
                 category = Nokogiri::HTML(open("#{BASE_URL}#{page.next.css('a').first['href']}"))
+                break
             end
             topics
+        end.flatten
+    end
+
+    def get_comments(topic)
+        topic_url = "#{BASE_URL}#{topic.url}"
+        puts "Getting comments for #{topic_url}"
+        html = Nokogiri::HTML(open(topic_url))
+        
+        comments = []
+        html.css('div.topic-post.tpl3').each do |post|
+            user_name = post.css('p.user-name a').first
+            user = User.new(user_name['href'], user_name.text.strip)
+
+            puts user
         end
     end
 end
