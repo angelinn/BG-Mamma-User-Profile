@@ -38,10 +38,10 @@ class BgMammaCrawler
         loop do
             page = category.css('li.uk-active').first            
             topics << category.css('p.topic-title a').map { |t| Topic.new(t['href']) } 
-            break if page.nil? || (not page.next['uk-disabled'].nil?)
+            break if last_page? page
 
             puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
-            category = Nokogiri::HTML(open("#{BASE_URL}#{page.next.css('a').first['href']}"))
+            category = Nokogiri::HTML(open(get_next_page_url(page)))
             break
         end
         topics.flatten
@@ -55,21 +55,43 @@ class BgMammaCrawler
         c = 0
         loop do
             break if c == 3
-            page = html.css('li.uk-active').first  
-            c += 1          
+            page = html.css('li.uk-active').first
             puts "Page #{page.text rescue 'last'}..."
-            html.css('div.topic-post.tpl3').map do |post|
-                user_name = post.css('p.user-name a').first
-                user = User.new(user_name['href'], user_name.text.strip)
-                content = post.css('div.post-content-inner').first.text.strip
-                date = post.css('span.post-date').text
-    
-                comments << Comment.new(user, content, date)
-            end
+            comments << get_single_page_comments(html)
 
-            break if page.nil? || (not page.next['uk-disabled'].nil?)
-            html = Nokogiri::HTML(open("#{BASE_URL}#{page.next.css('a').first['href']}"))            
+            c += 1
+            break if last_page? page
+            html = Nokogiri::HTML(open(get_next_page_url(page)))            
         end
-        comments
+        comments.flatten
+    end
+
+    def get_single_page_comments(topic_page)
+        topic_page.css('div.topic-post.tpl3').map do |post|
+            user_name = post.css('p.user-name a').first
+            user = User.new(user_name['href'], user_name.text.strip)
+            content = post.css('div.post-content-inner').first.text.strip
+            date = post.css('span.post-date').text
+            quotes = get_quotes(post)
+
+            Comment.new(user, content, date, quotes)
+        end
+    end
+
+    def last_page?(page_node)
+        page_node.nil? || (not page_node.next['uk-disabled'].nil?)
+    end
+
+    def get_next_page_url(page_node)
+        "#{BASE_URL}#{page_node.next.css('a').first['href']}"
+    end
+
+    def get_quotes(comment_node)
+        comment_node.css('div.quote-wrapper').map do |quote|
+            quoter = quote.css('div.quoteheader.pb_exclude').text
+            quoter = /Цитат на: (.*) в .*, .*, .*/.match(quoter)[1]
+            content = quote.css('div.quote.pb_exclude').first.text
+            Quote.new(quoter, content)
+        end
     end
 end
