@@ -57,7 +57,7 @@ class BgMammaCrawler
         comments = []
         c = 0
         loop do
-            break if c == 3
+            #break if c == 3
             page = html.css('li.uk-active').first
             puts "Page #{page.text rescue 'last'}..."
             comments << get_single_page_comments(html)
@@ -82,7 +82,7 @@ class BgMammaCrawler
     end
 
     def last_page?(page_node)
-        page_node.nil? || (not page_node.next['uk-disabled'].nil?)
+        page_node.nil? || page_node.next['class'].include?('uk-disabled') rescue false
     end
 
     def get_next_page_url(page_node)
