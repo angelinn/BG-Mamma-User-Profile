@@ -13,7 +13,7 @@ class BgMammaCrawler
 
     def crawl
         categories = get_categories
-        JsonSerializer.serialize(categories, 'topics/ categories.json')
+        JsonSerializer.serialize(categories, 'topics/categories.json')
 
         puts "Got #{categories.count} categories."
         categories.each do |c|
