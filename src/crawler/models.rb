@@ -1,18 +1,26 @@
 class Category
-    attr_accessor :topics
+    attr_accessor :name
     attr_accessor :url
+    attr_accessor :id
+
+    @@id = 1
 
     def initialize(url)
         self.url = url
+        self.id = @@id
+
+        @@id += 1        
     end
 end
 
 class Topic
     attr_accessor :url
     attr_accessor :comments
+    attr_accessor :category_id
 
-    def initialize(url)
+    def initialize(url, category_id)
         self.url = url
+        self.category_id = category_id
     end
 
     def to_s
