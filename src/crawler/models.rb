@@ -5,8 +5,9 @@ class Category
 
     @@id = 1
 
-    def initialize(url)
+    def initialize(url, name)
         self.url = url
+        self.name = name
         self.id = @@id
 
         @@id += 1        
@@ -17,9 +18,11 @@ class Topic
     attr_accessor :url
     attr_accessor :comments
     attr_accessor :category_id
+    attr_accessor :name
 
-    def initialize(url, category_id)
+    def initialize(url, name, category_id)
         self.url = url
+        self.name = name
         self.category_id = category_id
     end
 
