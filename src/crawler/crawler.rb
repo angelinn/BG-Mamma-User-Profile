@@ -16,9 +16,9 @@ class BgMammaCrawler
         JsonSerializer.serialize(categories, 'topics/ categories.json')
 
         puts "Got #{categories.count} categories."
-        categories[0..2].each do |c|
+        categories.each do |c|
             topics = get_topics(c)
-            topics[0..2].each do |t| 
+            topics.each do |t| 
                 t.comments = get_comments(t)
                 JsonSerializer.serialize(t, "topics/#{t.name}.json")
             end
@@ -39,13 +39,14 @@ class BgMammaCrawler
         topics = []
 
         loop do
-            page = category.css('li.uk-active').first            
+            page = category.css('li.uk-active').first 
+            puts "Page #{page.text rescue 'last'}..."
+            
             topics << category.css('p.topic-title a').map { |t| Topic.new(t['href'], t.text, c.id) } 
             break if last_page? page
 
             puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
             category = Nokogiri::HTML(open(get_next_page_url(page)))
-            break
         end
         topics.flatten
     end
@@ -55,14 +56,13 @@ class BgMammaCrawler
         puts "Getting comments for #{topic_url}"
         html = Nokogiri::HTML(open(topic_url))
         comments = []
-        c = 0
+        
         loop do
-            #break if c == 3
             page = html.css('li.uk-active').first
             puts "Page #{page.text rescue 'last'}..."
+        
             comments << get_single_page_comments(html)
 
-            c += 1
             break if last_page? page
             html = Nokogiri::HTML(open(get_next_page_url(page)))            
         end
