@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProfileCreator\ProfileCreator.csproj">
+      <Project>{03f41005-2a19-4a10-9c24-e556c0ea583e}</Project>
+      <Name>ProfileCreator</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

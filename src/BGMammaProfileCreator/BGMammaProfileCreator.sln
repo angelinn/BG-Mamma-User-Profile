@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "BGMammaProfileCreator\ConsoleTest\ConsoleTest.csproj", "{5453CE8C-4740-4797-A917-6656660C46BF}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleTest", "ConsoleTest\ConsoleTest.csproj", "{5453CE8C-4740-4797-A917-6656660C46BF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileCreator", "BGMammaProfileCreator\ProfileCreator\ProfileCreator.csproj", "{03F41005-2A19-4A10-9C24-E556C0EA583E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileCreator", "ProfileCreator\ProfileCreator.csproj", "{03F41005-2A19-4A10-9C24-E556C0EA583E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
