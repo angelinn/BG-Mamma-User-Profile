@@ -70,7 +70,7 @@ class BgMammaCrawler
         topic_page.css('div.topic-post.tpl3').map do |post|
             user_name = post.css('p.user-name a').first
             user = User.new(user_name['href'], user_name.text.strip)
-            content = post.css('div.post-content-inner').first.text.strip
+            content = post.css('div.post-content-inner').first.xpath('text()').text
             date = post.css('span.post-date').text
             quotes = get_quotes(post)
 
