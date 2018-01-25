@@ -11,7 +11,7 @@ class BgMammaCrawler
 
     def crawl(start_topic=nil)
         categories = get_categories
-        JsonSerializer.serialize(categories, 'topics/categories.json')
+        JsonSerializer.serialize(categories, 'topics', 'categories.json')
 
         categories.each do |c|
             for_each_topic(c) do |t| 
@@ -24,7 +24,7 @@ class BgMammaCrawler
                     next
                 end
                 t.comments = get_comments(t)
-                JsonSerializer.serialize(t, "topics/#{t.name}.json")
+                JsonSerializer.serialize(t, 'topics', "#{t.name}.json")
 
                 # Free up memory
                 t = nil
