@@ -17,7 +17,7 @@ class BgMammaCrawler
         categories.each do |c|
             topics = get_topics(c)
             topics.each do |t| 
-                if not start_topic.nil? and JsonSerializer.escape(start_topic) == t.name
+                if not start_topic.nil? and start_topic == JsonSerializer.escape(t.name)
                     puts "Skipping #{t.name}..."
                     next
                 end
