@@ -7,9 +7,9 @@ using System.Text;
 
 namespace DataTransformer.Reader
 {
-    public class JsonReader
+    public static class JsonReader
     {
-        public IEnumerable<Topic> ReadTopics(string topicsFolder)
+        public static IEnumerable<Topic> ReadTopics(string topicsFolder)
         {
             foreach (string file in Directory.GetFiles(topicsFolder))
             {
@@ -18,7 +18,7 @@ namespace DataTransformer.Reader
             }
         }
 
-        public void WriteUsers(IEnumerable<User> users)
+        public static void WriteUsers(IEnumerable<User> users)
         {
             foreach (User user in users)
                 File.WriteAllText($"users/{user.Username}", JsonConvert.SerializeObject(user));

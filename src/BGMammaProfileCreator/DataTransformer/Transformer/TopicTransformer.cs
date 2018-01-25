@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace DataTransformer.Transformer
 {
-    public class TopicTransformer
+    public static class TopicTransformer
     {
-        private Dictionary<string, User> users = new Dictionary<string, User>();
+        private static Dictionary<string, User> users = new Dictionary<string, User>();
 
-        public IEnumerable<User> Transform(IEnumerable<Topic> topics)
+        public static IEnumerable<User> Transform(IEnumerable<Topic> topics)
         {
+            Dictionary<string, User> users = new Dictionary<string, User>();
+
             foreach (Topic topic in topics)
             {
                 foreach (Comment comment in topic.Comments)
