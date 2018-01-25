@@ -11,8 +11,10 @@ namespace ConsoleTest
     {
         public static void Main(string[] args)
         {
-            TFIDFService tfidf = new TFIDFService();
-            tfidf.Test(null);
+            Classificator classificator = new Classificator();
+            classificator.Example();
+            //TFIDFService tfidf = new TFIDFService();
+            //tfidf.Test(null);
         }
     }
 }
