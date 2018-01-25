@@ -11,7 +11,7 @@ class BgMammaCrawler
         puts "Crawler initialized"
     end
 
-    def crawl
+    def crawl(start_topic=nil)
         categories = get_categories
         JsonSerializer.serialize(categories, 'topics/categories.json')
 
@@ -19,9 +19,14 @@ class BgMammaCrawler
         categories.each do |c|
             topics = get_topics(c)
             topics.each do |t| 
+                if not start_topic.nil? and start_topic == t.name
+                    puts "Skipping #{t.name}..."
+                    next
+                end
                 t.comments = get_comments(t)
                 JsonSerializer.serialize(t, "topics/#{t.name}.json")
             end
+            break
         end
     end
 
@@ -47,6 +52,7 @@ class BgMammaCrawler
 
             puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
             category = Nokogiri::HTML(open(get_next_page_url(page)))
+            break
         end
         topics.flatten
     end
@@ -64,7 +70,7 @@ class BgMammaCrawler
             comments << get_single_page_comments(html)
 
             break if last_page? page
-            html = Nokogiri::HTML(open(get_next_page_url(page)))            
+            html = Nokogiri::HTML(open(get_next_page_url(page)))     
         end
         comments.flatten
     end
@@ -72,6 +78,7 @@ class BgMammaCrawler
     def get_single_page_comments(topic_page)
         topic_page.css('div.topic-post.tpl3').map do |post|
             user_name = post.css('p.user-name a').first
+            next if user_name.nil?
             user = User.new(user_name['href'], user_name.text.strip)
             content = post.css('div.post-content-inner').first.xpath('text()').text.strip
             date = post.css('span.post-date').text
