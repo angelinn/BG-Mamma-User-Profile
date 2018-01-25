@@ -1,8 +1,6 @@
 require_relative 'models'
 require_relative 'serializer'
-
-require 'nokogiri'
-require 'open-uri'
+require_relative 'http_client'
 
 class BgMammaCrawler
     BASE_URL = 'http://www.bg-mamma.com'
@@ -19,7 +17,7 @@ class BgMammaCrawler
         categories.each do |c|
             topics = get_topics(c)
             topics.each do |t| 
-                if not start_topic.nil? and start_topic == t.name
+                if not start_topic.nil? and JsonSerializer.escape(start_topic) == t.name
                     puts "Skipping #{t.name}..."
                     next
                 end
@@ -33,14 +31,14 @@ class BgMammaCrawler
     def get_categories
         puts "Getting categories for #{BASE_URL}"
 
-        page = Nokogiri::HTML(open(BASE_URL))
+        page = HttpClient::HTML(open(BASE_URL))
         page.css('li.uk-parent a').select { |n| n['href'].include?('board') }
                                   .map    { |c| Category.new(c['href'], c.text)}
     end
 
     def get_topics(c)
         puts "Getting topics for #{c.url}"
-        category = Nokogiri::HTML(open("#{BASE_URL}#{c.url}"))
+        category = HttpClient::HTML(open("#{BASE_URL}#{c.url}"))
         topics = []
 
         loop do
@@ -51,7 +49,7 @@ class BgMammaCrawler
             break if last_page? page
 
             puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
-            category = Nokogiri::HTML(open(get_next_page_url(page)))
+            category = HttpClient::HTML(open(get_next_page_url(page)))
             break
         end
         topics.flatten
@@ -60,7 +58,7 @@ class BgMammaCrawler
     def get_comments(topic)
         topic_url = "#{BASE_URL}#{topic.url}"
         puts "Getting comments for #{topic_url}"
-        html = Nokogiri::HTML(open(topic_url))
+        html = HttpClient::HTML(open(topic_url))
         comments = []
         
         loop do
@@ -70,7 +68,7 @@ class BgMammaCrawler
             comments << get_single_page_comments(html)
 
             break if last_page? page
-            html = Nokogiri::HTML(open(get_next_page_url(page)))  
+            html = HttpClient::HTML(open(get_next_page_url(page)))    
         end
         comments.flatten
     end
