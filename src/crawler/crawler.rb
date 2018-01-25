@@ -70,7 +70,7 @@ class BgMammaCrawler
             comments << get_single_page_comments(html)
 
             break if last_page? page
-            html = Nokogiri::HTML(open(get_next_page_url(page)))     
+            html = Nokogiri::HTML(open(get_next_page_url(page)))  
         end
         comments.flatten
     end
@@ -99,7 +99,7 @@ class BgMammaCrawler
     def get_quotes(comment_node)
         comment_node.css('div.quote-wrapper').map do |quote|
             quoter = quote.css('div.quoteheader.pb_exclude').text
-            quoter = /Цитат на: (.*) в .*, .*, .*/.match(quoter)[1]
+            quoter = /Цитат на: (.*) в .*, .*, .*/.match(quoter)[1] rescue nil
             content = quote.css('div.quote.pb_exclude').first.text
             Quote.new(quoter, content)
         end                                                                                                                                              
