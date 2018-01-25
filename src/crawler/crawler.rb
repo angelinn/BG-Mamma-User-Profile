@@ -13,18 +13,22 @@ class BgMammaCrawler
         categories = get_categories
         JsonSerializer.serialize(categories, 'topics/categories.json')
 
-        puts "Got #{categories.count} categories."
         categories.each do |c|
-            topics = get_topics(c)
-            topics.each do |t| 
-                if not start_topic.nil? and start_topic == JsonSerializer.escape(t.name)
-                    puts "Skipping #{t.name}..."
+            for_each_topic(c) do |t| 
+                unless start_topic.nil?
+                    if start_topic != JsonSerializer.escape(t.name)
+                        puts "Skipping #{t.name}..."
+                    else
+                        start_topic = nil
+                    end
                     next
                 end
                 t.comments = get_comments(t)
                 JsonSerializer.serialize(t, "topics/#{t.name}.json")
+
+                # Free up memory
+                t = nil
             end
-            break
         end
     end
 
@@ -36,7 +40,7 @@ class BgMammaCrawler
                                   .map    { |c| Category.new(c['href'], c.text)}
     end
 
-    def get_topics(c)
+    def for_each_topic(c)
         puts "Getting topics for #{c.url}"
         category = HttpClient::HTML(open("#{BASE_URL}#{c.url}"))
         topics = []
@@ -45,12 +49,17 @@ class BgMammaCrawler
             page = category.css('li.uk-active').first 
             puts "Page #{page.text rescue 'last'}..."
             
-            topics << category.css('p.topic-title a').map { |t| Topic.new(t['href'], t.text, c.id) } 
+            category_topics = category.css('p.topic-title a')
+                                       .map { |t| Topic.new(t['href'], t.text, c.id) }
+            if block_given?
+                category_topics.each { |t| yield t }
+            end
+
+            topics << category_topics
             break if last_page? page
 
             puts "Opening #{BASE_URL}#{page.next.css('a').first['href']}"
             category = HttpClient::HTML(open(get_next_page_url(page)))
-            break
         end
         topics.flatten
     end
