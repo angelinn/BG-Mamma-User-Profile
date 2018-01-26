@@ -10,6 +10,7 @@ namespace ProfileCreator.Classification
     {
         public float Weight { get; set; }
         public string Value { get; set; }
+        public string Class { get; set; }
     }
 
     public static class FeelingsParser
@@ -43,7 +44,7 @@ namespace ProfileCreator.Classification
                 float w = Single.Parse(lines[i].Split('=')[1]);
 
                 while (i + 1 < lines.Length && !lines[++i].Contains("class="))
-                    classes[className].Add(new Feeling { Weight = w, Value = lines[i] });
+                    classes[className].Add(new Feeling { Weight = w, Value = lines[i], Class = className });
             }
 
             return classes;
