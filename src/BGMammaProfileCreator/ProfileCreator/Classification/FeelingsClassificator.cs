@@ -10,6 +10,7 @@ namespace ProfileCreator
     {
         public string Class { get; set; }
         public float Confidence { get; set; }
+        public Dictionary<string, float> Weights { get; set; } = new Dictionary<string, float>();
     }
 
     public class FeelingsClassificator
@@ -61,14 +62,15 @@ namespace ProfileCreator
 
         private ClassificationAnswer DetermineFinalAnswer()
         {
-            KeyValuePair<string, float> chosen = weights.FirstOrDefault(p => p.Value == weights.Values.Max());
-            if (chosen.Value == 0)
-                return null;
+            //KeyValuePair<string, float> chosen = weights.FirstOrDefault(p => p.Value == weights.Values.Max());
+           // if (chosen.Value == 0)
+               // return null;
 
             return new ClassificationAnswer
             {
-                Class = chosen.Key,
-                Confidence = chosen.Value / weights.Values.Sum()
+                //Class = chosen.Key,
+                //Confidence = chosen.Value / weights.Values.Sum()
+                Weights = weights
             };
         }
     }
