@@ -38,6 +38,9 @@
     <Reference Include="Lucene.Net.Analysis.Common, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Lucene.Net.Analysis.Common.4.8.0-beta00005\lib\net45\Lucene.Net.Analysis.Common.dll</HintPath>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.10.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -56,6 +59,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ProfileCreator.Models\ProfileCreator.Models.csproj">
+      <Project>{432E8A3A-E8E9-4E58-9A16-57F4198D3702}</Project>
+      <Name>ProfileCreator.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ProfileCreator\ProfileCreator.csproj">
       <Project>{03f41005-2a19-4a10-9c24-e556c0ea583e}</Project>
       <Name>ProfileCreator</Name>

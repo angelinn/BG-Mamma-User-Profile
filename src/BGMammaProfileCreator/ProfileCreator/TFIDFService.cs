@@ -24,19 +24,30 @@ namespace ProfileCreator
     {
         private Directory currentDirectory;
 
-        public void CreateIndex(IEnumerable<User> users)
+        public void CreateIndex(IEnumerable<ProcessedUser> users)
         {
-            currentDirectory = new RAMDirectory();
+            currentDirectory = new NIOFSDirectory("Lucene\\Directory");
+
             BulgarianAnalyzer analyzer = new BulgarianAnalyzer(LuceneVersion.LUCENE_48);
             IndexWriterConfig config = new IndexWriterConfig(LuceneVersion.LUCENE_48, analyzer);
             IndexWriter writer = new IndexWriter(currentDirectory, config);
 
-            foreach (User user in users)
+            foreach (ProcessedUser user in users)
             {
                 Document doc = new Document();
+
                 doc.AddStringField("user", user.Username, Field.Store.YES);
                 doc.AddStringField("profile_url", user.ProfileUrl, Field.Store.YES);
-                doc.AddTextField("contents", String.Join("\n-------\n", user.Comments.Select(c => c.Content)), Field.Store.NO);
+
+                FieldType type = new FieldType
+                {
+                    IsIndexed = true,
+                    IsStored = true,
+                    StoreTermVectors = true
+                };
+
+                doc.Add(new Field("contents", String.Join("\n-------\n", user.Comments.Select(c => c.Content)), type));
+
                 writer.AddDocument(doc);
             }
             writer.Commit();
