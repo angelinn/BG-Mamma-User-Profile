@@ -17,7 +17,20 @@ namespace ProfileCreator
     public class DocumentFrequency
     {
         public string User { get; set; }
-        public Dictionary<string, int> Frequencies = new Dictionary<string, int>();
+        public List<Frequency> Frequencies = new List<Frequency>();
+    }
+
+
+    public class Frequency
+    {
+        public string Term { get; set; }
+        public int Value { get; set; }
+
+        public Frequency(string text, int frequency)
+        {
+            Term = text;
+            Value = frequency;
+        }
     }
 
     public class TFIDFService
@@ -53,7 +66,7 @@ namespace ProfileCreator
             writer.Commit();
         }
 
-        public IEnumerable<DocumentFrequency> GetMostUsed(int most = 10)
+        public IEnumerable<DocumentFrequency> GetTermFrequencies()
         {
             IndexSearcher searcher = new IndexSearcher(DirectoryReader.Open(currentDirectory));
             DocumentFrequency documentFrequency = null;
@@ -75,7 +88,7 @@ namespace ProfileCreator
                         int frequency = searcher.IndexReader.DocFreq(term);
                         string termText = term.Text();
 
-                        documentFrequency.Frequencies.Add(termText, frequency);
+                        documentFrequency.Frequencies.Add(new  Frequency(termText, frequency));
                     }
                 }
 

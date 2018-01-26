@@ -25,7 +25,7 @@ namespace ConsoleTest
 
             TFIDFService tfidf = new TFIDFService();
             tfidf.CreateIndex(users);
-            List<DocumentFrequency> frequencies = tfidf.GetMostUsed().ToList();
+            List<DocumentFrequency> frequencies = tfidf.GetTermFrequencies().ToList();
         }
     }
 }
