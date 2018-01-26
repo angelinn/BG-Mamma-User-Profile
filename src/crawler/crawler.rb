@@ -51,9 +51,8 @@ class BgMammaCrawler
             
             category_topics = category.css('p.topic-title a')
                                        .map { |t| Topic.new(t['href'], t.text, c.id) }
-            if block_given?
-                category_topics.each { |t| yield t }
-            end
+
+            category_topics.each { |t| yield t } if block_given?
 
             topics << category_topics
             break if last_page? page
