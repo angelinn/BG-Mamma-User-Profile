@@ -1,5 +1,4 @@
-﻿using BGStemmer.Lucene;
-using Lucene.Net.Analysis.Bg;
+﻿using Lucene.Net.Analysis.Bg;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
@@ -40,6 +39,10 @@ namespace ProfileCreator
 
         public void CreateIndex(IEnumerable<ProcessedUser> users)
         {
+            if (System.IO.Directory.Exists("Lucene"))
+                return;
+
+            System.IO.Directory.CreateDirectory("Lucene");
             currentDirectory = new NIOFSDirectory("Lucene\\Directory");
 
             BulgarianAnalyzer analyzer = new BulgarianAnalyzer(LuceneVersion.LUCENE_48);
@@ -70,6 +73,9 @@ namespace ProfileCreator
 
         public IEnumerable<DocumentFrequency> GetTermFrequencies()
         {
+            if (currentDirectory == null)
+                currentDirectory = new NIOFSDirectory("Lucene\\Directory");
+
             IndexSearcher searcher = new IndexSearcher(DirectoryReader.Open(currentDirectory));
             DocumentFrequency documentFrequency = null;
 
@@ -78,6 +84,9 @@ namespace ProfileCreator
                 documentFrequency = new DocumentFrequency();
 
                 Fields fields = searcher.IndexReader.GetTermVectors(i);
+                if (fields == null)
+                    continue;
+
                 foreach (string field in fields)
                 {
                     Terms terms = fields.GetTerms(field);
