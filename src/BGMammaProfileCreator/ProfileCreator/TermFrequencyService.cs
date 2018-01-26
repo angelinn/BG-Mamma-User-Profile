@@ -1,4 +1,5 @@
-﻿using Lucene.Net.Analysis.Bg;
+﻿using BGStemmer.Lucene;
+using Lucene.Net.Analysis.Bg;
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;

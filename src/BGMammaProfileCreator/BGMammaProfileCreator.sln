@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileCreator", "ProfileCr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransformer", "DataTransformer\DataTransformer.csproj", "{873F23FC-F31D-4278-A676-3C0800ED5886}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileCreator.Models", "ProfileCreator.Models\ProfileCreator.Models.csproj", "{432E8A3A-E8E9-4E58-9A16-57F4198D3702}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileCreator.Models", "ProfileCreator.Models\ProfileCreator.Models.csproj", "{432E8A3A-E8E9-4E58-9A16-57F4198D3702}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,12 +1,6 @@
-﻿using Accord.MachineLearning.Bayes;
-using Accord.Math;
-using Accord.Statistics.Distributions.Univariate;
-using Accord.Statistics.Filters;
-using Accord.Statistics.Kernels;
-using ProfileCreator.Classification;
+﻿using ProfileCreator.Classification;
 using System;
 using System.Collections.Generic;
-using System.Data;
 using System.Linq;
 using System.Text;
 
