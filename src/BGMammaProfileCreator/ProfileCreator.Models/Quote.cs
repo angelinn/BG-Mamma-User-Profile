@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataTransformer.Reader.Models
+namespace ProfileCreator.Models
 {
     public class Quote
     {

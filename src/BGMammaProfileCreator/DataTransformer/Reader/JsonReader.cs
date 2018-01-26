@@ -1,5 +1,6 @@
 ﻿using DataTransformer.Reader.Models;
 using Newtonsoft.Json;
+using ProfileCreator.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;

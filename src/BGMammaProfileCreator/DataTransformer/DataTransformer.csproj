@@ -48,15 +48,17 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reader\JsonReader.cs" />
-    <Compile Include="Reader\Models\Comment.cs" />
-    <Compile Include="Reader\Models\Quote.cs" />
-    <Compile Include="Reader\Models\Topic.cs" />
-    <Compile Include="Reader\Models\User.cs" />
     <Compile Include="Transformer\TopicTransformer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ProfileCreator.Models\ProfileCreator.Models.csproj">
+      <Project>{432E8A3A-E8E9-4E58-9A16-57F4198D3702}</Project>
+      <Name>ProfileCreator.Models</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
