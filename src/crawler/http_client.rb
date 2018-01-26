@@ -3,7 +3,7 @@ require 'open-uri'
 
 class HttpClient
     def self.HTML(url)
-        sleep 1
+        sleep 0.3
         Nokogiri::HTML(open(url))
     end
 end
