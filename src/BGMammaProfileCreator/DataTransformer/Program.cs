@@ -1,6 +1,6 @@
 ﻿using DataTransformer.Reader;
-using DataTransformer.Reader.Models;
 using DataTransformer.Transformer;
+using ProfileCreator.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,8 +13,8 @@ namespace DataTransformer
     {
         public static void Main(string[] args)
         {
-            IEnumerable<Topic> topics = JsonReader.ReadTopics("topics");
-            IEnumerable<User> users = TopicTransformer.Transform(topics);
+            IEnumerable<Topic> topics = JsonReader.ReadTopics(@"D:\Repositories\BG-Mamma-User-Profile\src\BGMammaProfileCreator\ConsoleTest\test");
+            IEnumerable<ProcessedUser> users = TopicTransformer.Transform(topics);
 
             JsonReader.WriteUsers(users);
         }

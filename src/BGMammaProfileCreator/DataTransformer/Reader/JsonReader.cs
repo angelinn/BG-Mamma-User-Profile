@@ -1,10 +1,10 @@
-﻿using DataTransformer.Reader.Models;
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using ProfileCreator.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace DataTransformer.Reader
 {
@@ -19,10 +19,10 @@ namespace DataTransformer.Reader
             }
         }
 
-        public static void WriteUsers(IEnumerable<User> users)
+        public static void WriteUsers(IEnumerable<ProcessedUser> users)
         {
-            foreach (User user in users)
-                File.WriteAllText($"users/{user.Username}", JsonConvert.SerializeObject(user));
+            foreach (ProcessedUser user in users)
+                File.WriteAllText($"users/{Regex.Replace(user.Username, "[\x00\\:\\*\\?\"\\/<>\\|]", "_")}.json", JsonConvert.SerializeObject(user));
         }
     }
 }

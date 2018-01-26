@@ -11,6 +11,5 @@ namespace ProfileCreator.Models
         public string Username { get; set; }
         [JsonProperty("profile_url")]
         public string ProfileUrl { get; set; }
-        public List<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
