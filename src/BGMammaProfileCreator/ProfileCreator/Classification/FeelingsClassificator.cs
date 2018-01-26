@@ -18,14 +18,14 @@ namespace ProfileCreator
         private Dictionary<string, List<Feeling>> feelings;
         private Dictionary<string, float> weights;
 
-        public ClassificationAnswer Decide(IEnumerable<string> words)
+        public ClassificationAnswer Decide(IEnumerable<Frequency> words)
         {
             Initialize();
 
-            foreach (string word in words)
+            foreach (Frequency word in words)
             {
-                if (TryMatch(word, out Feeling feeling))
-                    RegisterMatch(feeling);
+                if (TryMatch(word.Term, out Feeling feeling))
+                    RegisterMatch(feeling, word.Value);
             }
 
             return DetermineFinalAnswer();
@@ -55,22 +55,22 @@ namespace ProfileCreator
                 weights.Add(probabilityClass, 0);
         }
 
-        private void RegisterMatch(Feeling feeling)
+        private void RegisterMatch(Feeling feeling, int termFrequency)
         {
-            weights[feeling.Class] += feeling.Weight;
+            weights[feeling.Class] += feeling.Weight * termFrequency;
         }
 
         private ClassificationAnswer DetermineFinalAnswer()
         {
             //KeyValuePair<string, float> chosen = weights.FirstOrDefault(p => p.Value == weights.Values.Max());
-           // if (chosen.Value == 0)
-               // return null;
+            // if (chosen.Value == 0)
+            // return null;
 
             return new ClassificationAnswer
             {
                 //Class = chosen.Key,
                 //Confidence = chosen.Value / weights.Values.Sum()
-                Weights = weights
+                Weights = weights.Where(p => p.Value > 0).ToDictionary(t => t.Key, t => t.Value)
             };
         }
     }

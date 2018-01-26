@@ -32,7 +32,7 @@ namespace ProfileCreator
             {
                 document.Frequencies = document.Frequencies.Where(f => !wordBlocker.IsBlocked(f.Term)).ToList();
                 IEnumerable<Frequency> ordered = document.Frequencies.OrderByDescending(f => f.Value);
-                var weights = classificator.Decide(ordered.Take(10).Select(f => f.Term));
+                var weights = classificator.Decide(ordered.Take(10));
             }
 
         }
