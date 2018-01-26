@@ -13,7 +13,7 @@ namespace DataTransformer
     {
         public static void Main(string[] args)
         {
-            IEnumerable<Topic> topics = JsonReader.ReadTopics(@"D:\Repositories\BG-Mamma-User-Profile\src\BGMammaProfileCreator\ConsoleTest\test");
+            IEnumerable<Topic> topics = JsonReader.ReadTopics(@"D:\Repositories\BG-Mamma-User-Profile\src\crawler\topics");
             IEnumerable<ProcessedUser> users = TopicTransformer.Transform(topics);
 
             JsonReader.WriteUsers(users);

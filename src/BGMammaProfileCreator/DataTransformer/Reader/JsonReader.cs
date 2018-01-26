@@ -22,7 +22,16 @@ namespace DataTransformer.Reader
         public static void WriteUsers(IEnumerable<ProcessedUser> users)
         {
             foreach (ProcessedUser user in users)
-                File.WriteAllText($"users/{Regex.Replace(user.Username, "[\x00\\:\\*\\?\"\\/<>\\|]", "_")}.json", JsonConvert.SerializeObject(user));
+            {
+                try
+                {
+                    File.WriteAllText($"users/{Regex.Replace(user.Username, "[\x00\\:\\*\\?\"\\/<>\\|\\\'\\^]", "_")}.json", JsonConvert.SerializeObject(user));
+                }
+                catch (Exception e)
+                {
+                    continue;
+                }
+            }
         }
     }
 }
