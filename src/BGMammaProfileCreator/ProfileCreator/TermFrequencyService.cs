@@ -33,7 +33,7 @@ namespace ProfileCreator
         }
     }
 
-    public class TFIDFService
+    public class TermFrequencyService
     {
         private Directory currentDirectory;
 
@@ -45,6 +45,13 @@ namespace ProfileCreator
             IndexWriterConfig config = new IndexWriterConfig(LuceneVersion.LUCENE_48, analyzer);
             IndexWriter writer = new IndexWriter(currentDirectory, config);
 
+            FieldType type = new FieldType
+            {
+                IsIndexed = true,
+                IsStored = true,
+                StoreTermVectors = true
+            };
+
             foreach (ProcessedUser user in users)
             {
                 Document doc = new Document();
@@ -52,12 +59,6 @@ namespace ProfileCreator
                 doc.AddStringField("user", user.Username, Field.Store.YES);
                 doc.AddStringField("profile_url", user.ProfileUrl, Field.Store.YES);
 
-                FieldType type = new FieldType
-                {
-                    IsIndexed = true,
-                    IsStored = true,
-                    StoreTermVectors = true
-                };
 
                 doc.Add(new Field("contents", String.Join("\n-------\n", user.Comments.Select(c => c.Content)), type));
 

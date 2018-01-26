@@ -33,10 +33,10 @@ namespace ProfileCreator
                     RegisterMatch(feeling);
             }
 
-            return DetermineFinalAnswer(weights);
+            return DetermineFinalAnswer();
         }
 
-        public bool TryMatch(string word, out Feeling feeling)
+        private bool TryMatch(string word, out Feeling feeling)
         {
             feeling = null;
 
@@ -56,6 +56,8 @@ namespace ProfileCreator
                 feelings = FeelingsParser.Parse();
 
             weights = new Dictionary<string, float>();
+            foreach (string probabilityClass in feelings.Keys)
+                weights.Add(probabilityClass, 0);
         }
 
         private void RegisterMatch(Feeling feeling)
@@ -63,9 +65,11 @@ namespace ProfileCreator
             weights[feeling.Class] += feeling.Weight;
         }
 
-        private ClassificationAnswer DetermineFinalAnswer(Dictionary<string, float> weights)
+        private ClassificationAnswer DetermineFinalAnswer()
         {
             KeyValuePair<string, float> chosen = weights.FirstOrDefault(p => p.Value == weights.Values.Max());
+            if (chosen.Value == 0)
+                return null;
 
             return new ClassificationAnswer
             {
