@@ -5,24 +5,53 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:ProfileSearcher"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="BG-Mamma Profile Search Engine" Height="600" Width="800"
+        DataContext="{Binding MainViewModel, Source={StaticResource Locator}}">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150" />
+            <RowDefinition Height="100" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
         <StackPanel Margin="10" HorizontalAlignment="Left">
-            <Label Content="Търсачка" />
-            <TextBox Width="250" Text="{Binding Query}" />
-            <Button Content="Търсене" Width="100" Command="{Binding SearchCommand}"/>
+            <Label Content="BG-Mamma - Търсачка на профили" />
+            <StackPanel Orientation="Horizontal">
+                <TextBox Width="250" Text="{Binding Query}" />
+                <ComboBox ItemsSource="{Binding Fields}" Margin="5,0,5,0" SelectedItem="{Binding SelectedField}" DisplayMemberPath="Key" SelectedIndex="0" />
+                <Button Content="Търсене" Width="100" Command="{Binding SearchCommand}"/>
+            </StackPanel>
         </StackPanel>
 
-        <Grid Grid.Row="1">
-            <ListView ItemsSource="{Binding QueryResults}">
+        <Grid Grid.Row="1" Margin="10">
+            <ListView ItemsSource="{Binding Users}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
+                <ListView.ItemContainerStyle>
+                    <Style TargetType="ListViewItem">
+                        <Setter Property="Height" Value="60" />
+                    </Style>
+                </ListView.ItemContainerStyle>
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        
+                        <Grid>
+                            <StackPanel Orientation="Horizontal">
+                                <StackPanel>
+                                    <Label Content="{Binding Username}" ContentStringFormat="Потребител: {0}" />
+                                    <Label Content="{Binding ProfileUrl}" />
+                                </StackPanel>
+                                <Label Content="{Binding Classes}" />
+                            </StackPanel>
+                            <!--<Grid HorizontalAlignment="Right">
+                                <ListView ItemsSource="{Binding List}">
+                                    <ListView.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Label Content="{Binding Key}" />
+                                                <Label Content="{Binding Value}" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ListView.ItemTemplate>
+                                </ListView>-->
+                            <!--</Grid>-->
+                        </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
             </ListView>

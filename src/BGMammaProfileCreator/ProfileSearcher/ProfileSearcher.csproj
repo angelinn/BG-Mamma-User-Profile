@@ -69,7 +69,9 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="ProfileSearch\ProfileSearchService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -115,6 +117,10 @@
     <ProjectReference Include="..\ProfileCreator.Models\ProfileCreator.Models.csproj">
       <Project>{432E8A3A-E8E9-4E58-9A16-57F4198D3702}</Project>
       <Name>ProfileCreator.Models</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ProfileCreator\ProfileCreator.csproj">
+      <Project>{03f41005-2a19-4a10-9c24-e556c0ea583e}</Project>
+      <Name>ProfileCreator</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
