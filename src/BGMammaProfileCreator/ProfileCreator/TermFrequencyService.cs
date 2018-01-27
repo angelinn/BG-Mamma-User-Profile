@@ -17,6 +17,7 @@ namespace ProfileCreator
     public class DocumentFrequency
     {
         public string User { get; set; }
+        public string ProfileUrl { get; set; }
         public List<Frequency> Frequencies = new List<Frequency>();
     }
 
@@ -101,6 +102,8 @@ namespace ProfileCreator
                             documentFrequency.Frequencies.Add(new Frequency(termText, frequency));
                         if (field == "user")
                             documentFrequency.User = termText;
+                        if (field == "profile_url")
+                            documentFrequency.ProfileUrl = termText;
                     }
                 }
 
