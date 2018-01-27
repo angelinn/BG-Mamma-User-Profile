@@ -60,10 +60,8 @@ namespace ProfileCreator
             {
                 Document doc = new Document();
 
-                doc.AddStringField("user", user.Username, Field.Store.YES);
-                doc.AddStringField("profile_url", user.ProfileUrl, Field.Store.YES);
-
-
+                doc.Add(new Field("user", user.Username, type));
+                doc.Add(new Field("profile_url", user.ProfileUrl, type));
                 doc.Add(new Field("contents", String.Join("\n-------\n", user.Comments.Select(c => c.Content)), type));
 
                 writer.AddDocument(doc);
@@ -99,7 +97,10 @@ namespace ProfileCreator
                         int frequency = searcher.IndexReader.DocFreq(term);
                         string termText = term.Text();
 
-                        documentFrequency.Frequencies.Add(new  Frequency(termText, frequency));
+                        if (field == "contents")
+                            documentFrequency.Frequencies.Add(new Frequency(termText, frequency));
+                        if (field == "user")
+                            documentFrequency.User = termText;
                     }
                 }
 

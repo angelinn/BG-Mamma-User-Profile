@@ -16,7 +16,8 @@ namespace ConsoleTest
         public static void Main(string[] args)
         {
             ProfileService service = new ProfileService();
-            service.CreateProfiles(@"D:\Repositories\BG-Mamma-User-Profile\src\BGMammaProfileCreator\DataTransformer\bin\Debug\users");
+            //service.CreateProfiles(@"C:\temp\users");
+            service.GetFrequencies();
         }
     }
 }
