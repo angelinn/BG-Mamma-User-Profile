@@ -11,6 +11,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DataTransformer", "DataTran
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ProfileCreator.Models", "ProfileCreator.Models\ProfileCreator.Models.csproj", "{432E8A3A-E8E9-4E58-9A16-57F4198D3702}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProfileSearcher", "ProfileSearcher\ProfileSearcher.csproj", "{464E2098-C8BE-4A6E-8E79-51CAA9FDC37B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{432E8A3A-E8E9-4E58-9A16-57F4198D3702}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{432E8A3A-E8E9-4E58-9A16-57F4198D3702}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{432E8A3A-E8E9-4E58-9A16-57F4198D3702}.Release|Any CPU.Build.0 = Release|Any CPU
+		{464E2098-C8BE-4A6E-8E79-51CAA9FDC37B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{464E2098-C8BE-4A6E-8E79-51CAA9FDC37B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{464E2098-C8BE-4A6E-8E79-51CAA9FDC37B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{464E2098-C8BE-4A6E-8E79-51CAA9FDC37B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
