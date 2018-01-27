@@ -18,9 +18,9 @@
             <StackPanel Orientation="Horizontal">
                 <TextBox Width="250" Text="{Binding Query}" />
                 <ComboBox ItemsSource="{Binding Fields}" Margin="5,0,5,0" SelectedItem="{Binding SelectedField}" DisplayMemberPath="Key" SelectedIndex="0" />
-                <Button Content="Търсене" Width="100" Command="{Binding SearchCommand}"/>
             </StackPanel>
         </StackPanel>
+        <Button Content="Търсене" Width="100" Command="{Binding SearchCommand}" HorizontalAlignment="Right" Height="30" Margin="0,0,10,0"/>
 
         <Grid Grid.Row="1" Margin="10">
             <ListView ItemsSource="{Binding Users}" HorizontalAlignment="Stretch" HorizontalContentAlignment="Stretch">
@@ -35,22 +35,14 @@
                             <StackPanel Orientation="Horizontal">
                                 <StackPanel>
                                     <Label Content="{Binding Username}" ContentStringFormat="Потребител: {0}" />
-                                    <Label Content="{Binding ProfileUrl}" />
+                                    <TextBlock>           
+                                        <Hyperlink NavigateUri="{Binding ProfileUrl}" RequestNavigate="Hyperlink_RequestNavigate">
+                                            <TextBlock Text="{Binding ProfileUrl}"/>
+                                        </Hyperlink>
+                                    </TextBlock>
                                 </StackPanel>
-                                <Label Content="{Binding Classes}" />
                             </StackPanel>
-                            <!--<Grid HorizontalAlignment="Right">
-                                <ListView ItemsSource="{Binding List}">
-                                    <ListView.ItemTemplate>
-                                        <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
-                                                <Label Content="{Binding Key}" />
-                                                <Label Content="{Binding Value}" />
-                                            </StackPanel>
-                                        </DataTemplate>
-                                    </ListView.ItemTemplate>
-                                </ListView>-->
-                            <!--</Grid>-->
+                            <Label Content="{Binding Classes}" HorizontalAlignment="Right" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

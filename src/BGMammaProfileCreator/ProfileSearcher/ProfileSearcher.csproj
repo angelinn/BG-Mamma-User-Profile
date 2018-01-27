@@ -71,7 +71,6 @@
     </ApplicationDefinition>
     <Compile Include="ProfileSearch\ProfileSearchService.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
-    <Compile Include="ViewModel\UserViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

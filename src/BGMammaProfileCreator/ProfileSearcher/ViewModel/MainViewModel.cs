@@ -5,6 +5,7 @@ using ProfileCreator.Models.Analyzed;
 using ProfileSearcher.ProfileSearch;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Input;
 
@@ -46,6 +47,7 @@ namespace ProfileSearcher.ViewModel
         }
 
         public ICommand SearchCommand { get; private set; }
+
         public MainViewModel()
         {
             SearchCommand = new RelayCommand(Search);
