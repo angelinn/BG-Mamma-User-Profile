@@ -8,8 +8,6 @@ namespace ProfileCreator
 {
     public class ClassificationAnswer
     {
-        public string Class { get; set; }
-        public float Confidence { get; set; }
         public Dictionary<string, float> Weights { get; set; } = new Dictionary<string, float>();
     }
 

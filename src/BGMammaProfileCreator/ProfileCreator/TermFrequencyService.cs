@@ -2,6 +2,7 @@
 using Lucene.Net.Analysis.Standard;
 using Lucene.Net.Documents;
 using Lucene.Net.Index;
+using Lucene.Net.QueryParsers.Classic;
 using Lucene.Net.Search;
 using Lucene.Net.Search.Similarities;
 using Lucene.Net.Store;
@@ -76,39 +77,59 @@ namespace ProfileCreator
                 currentDirectory = new NIOFSDirectory("Lucene\\Directory");
 
             IndexSearcher searcher = new IndexSearcher(DirectoryReader.Open(currentDirectory));
-            DocumentFrequency documentFrequency = null;
 
             for (int i = 0; i < searcher.IndexReader.NumDocs; ++i)
             {
-                documentFrequency = new DocumentFrequency();
-
-                Fields fields = searcher.IndexReader.GetTermVectors(i);
-                if (fields == null)
-                    continue;
-
-                foreach (string field in fields)
-                {
-                    Terms terms = fields.GetTerms(field);
-                    TermsEnum iterator = terms.GetIterator(null);
-
-                    while (iterator.Next() != null)
-                    {
-                        Term term = new Term(field, iterator.Term);
-
-                        int frequency = searcher.IndexReader.DocFreq(term);
-                        string termText = term.Text();
-
-                        if (field == "contents")
-                            documentFrequency.Frequencies.Add(new Frequency(termText, frequency));
-                        if (field == "user")
-                            documentFrequency.User = termText;
-                        if (field == "profile_url")
-                            documentFrequency.ProfileUrl = termText;
-                    }
-                }
-
-                yield return documentFrequency;
+                yield return GetTermFrequencyForSingleDocument(searcher, i);
             }
+        }
+
+        public IEnumerable<DocumentFrequency> Search(string query, string field, int topHits = 20)
+        {
+            if (currentDirectory == null)
+                currentDirectory = new NIOFSDirectory("Lucene\\Directory");
+
+            IndexSearcher searcher = new IndexSearcher(DirectoryReader.Open(currentDirectory));
+            QueryParser parser = new QueryParser(LuceneVersion.LUCENE_48, field, new BulgarianAnalyzer(LuceneVersion.LUCENE_48));
+            Query q = parser.Parse(query);
+
+            TopDocs docs = searcher.Search(q, topHits);
+            foreach (ScoreDoc doc in docs.ScoreDocs)
+            {
+                yield return GetTermFrequencyForSingleDocument(searcher, doc.Doc);
+            }
+        }
+
+        private DocumentFrequency GetTermFrequencyForSingleDocument(IndexSearcher searcher, int documentID)
+        {
+            DocumentFrequency documentFrequency = new DocumentFrequency();
+
+            Fields fields = searcher.IndexReader.GetTermVectors(documentID);
+            if (fields == null)
+                return null;
+
+            foreach (string field in fields)
+            {
+                Terms terms = fields.GetTerms(field);
+                TermsEnum iterator = terms.GetIterator(null);
+
+                while (iterator.Next() != null)
+                {
+                    Term term = new Term(field, iterator.Term);
+
+                    int frequency = searcher.IndexReader.DocFreq(term);
+                    string termText = term.Text();
+
+                    if (field == "contents")
+                        documentFrequency.Frequencies.Add(new Frequency(termText, frequency));
+                    if (field == "user")
+                        documentFrequency.User = termText;
+                    if (field == "profile_url")
+                        documentFrequency.ProfileUrl = termText;
+                }
+            }
+
+            return documentFrequency;
         }
     }
 }

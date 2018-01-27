@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using ProfileCreator.Classification;
 using ProfileCreator.Models;
+using ProfileCreator.Models.Analyzed;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -24,6 +25,12 @@ namespace ProfileCreator
             tfService.CreateIndex(users);
         }
 
+        public void Search(string query, string field)
+        {
+            TermFrequencyService tfService = new TermFrequencyService();
+            tfService.Search(query, field);
+        }
+
         public void GetFrequencies()
         {
             TermFrequencyService tfService = new TermFrequencyService();
@@ -38,6 +45,15 @@ namespace ProfileCreator
                 document.Frequencies = document.Frequencies.Where(f => !wordBlocker.IsBlocked(f.Term)).ToList();
                 IEnumerable<Frequency> ordered = document.Frequencies.OrderByDescending(f => f.Value);
                 var weights = classificator.Decide(ordered.Take(10));
+
+                AnalyzedUser user = new AnalyzedUser
+                {
+                    Username = document.User,
+                    ProfileUrl = document.ProfileUrl,
+                    Characteristics = weights.Weights
+                };
+
+                string json = JsonConvert.SerializeObject(user);
             }
         }
     }
