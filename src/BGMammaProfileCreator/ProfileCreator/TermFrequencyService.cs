@@ -51,20 +51,20 @@ namespace ProfileCreator
             IndexWriterConfig config = new IndexWriterConfig(LuceneVersion.LUCENE_48, analyzer);
             IndexWriter writer = new IndexWriter(currentDirectory, config);
 
-            FieldType type = new FieldType
+            FieldType contentsType = new FieldType
             {
                 IsIndexed = true,
                 IsStored = true,
-                StoreTermVectors = true
+                StoreTermVectors = true,
             };
 
             foreach (ProcessedUser user in users)
             {
                 Document doc = new Document();
 
-                doc.Add(new Field("user", user.Username, type));
-                doc.Add(new Field("profile_url", user.ProfileUrl, type));
-                doc.Add(new Field("contents", String.Join("\n-------\n", user.Comments.Select(c => c.Content)), type));
+                doc.Add(new Field("user", user.Username, contentsType));
+                doc.Add(new Field("profile_url", user.ProfileUrl, contentsType));
+                doc.Add(new Field("contents", String.Join("\n-------\n", user.Comments.Select(c => c.Content)), contentsType));
 
                 writer.AddDocument(doc);
             }
@@ -87,7 +87,7 @@ namespace ProfileCreator
         public IEnumerable<DocumentFrequency> Search(string query, string field, int topHits = 20)
         {
             if (currentDirectory == null)
-                currentDirectory = new NIOFSDirectory("Lucene\\Directory");
+                currentDirectory = new NIOFSDirectory(@"D:\Repositories\BG-Mamma-User-Profile\src\BGMammaProfileCreator\ConsoleTest\bin\Debug\Lucene\Directory");
 
             IndexSearcher searcher = new IndexSearcher(DirectoryReader.Open(currentDirectory));
             QueryParser parser = new QueryParser(LuceneVersion.LUCENE_48, field, new BulgarianAnalyzer(LuceneVersion.LUCENE_48));
@@ -96,7 +96,12 @@ namespace ProfileCreator
             TopDocs docs = searcher.Search(q, topHits);
             foreach (ScoreDoc doc in docs.ScoreDocs)
             {
-                yield return GetTermFrequencyForSingleDocument(searcher, doc.Doc);
+                Document docu = searcher.Doc(doc.Doc);
+                DocumentFrequency freq = GetTermFrequencyForSingleDocument(searcher, doc.Doc);
+                freq.User = docu.Get("user");
+                freq.ProfileUrl = docu.Get("profile_url");
+
+                yield return freq;
             }
         }
 
