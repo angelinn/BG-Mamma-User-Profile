@@ -13,15 +13,20 @@ namespace ProfileCreator
     {
         public void CreateProfiles(string usersDirectory)
         {
-            //List<ProcessedUser> users = new List<ProcessedUser>();
-            //foreach (string file in Directory.GetFiles(usersDirectory))
-            //{
-            //    string json = File.ReadAllText(file);
-            //    users.Add(JsonConvert.DeserializeObject<ProcessedUser>(json));
-            //}
+            List<ProcessedUser> users = new List<ProcessedUser>();
+            foreach (string file in Directory.GetFiles(usersDirectory))
+            {
+                string json = File.ReadAllText(file);
+                users.Add(JsonConvert.DeserializeObject<ProcessedUser>(json));
+            }
 
             TermFrequencyService tfService = new TermFrequencyService();
-            // tfService.CreateIndex(users);
+            tfService.CreateIndex(users);
+        }
+
+        public void GetFrequencies()
+        {
+            TermFrequencyService tfService = new TermFrequencyService();
             IEnumerable<DocumentFrequency> frequencies = tfService.GetTermFrequencies();
 
             FeelingsClassificator classificator = new FeelingsClassificator();
@@ -34,7 +39,6 @@ namespace ProfileCreator
                 IEnumerable<Frequency> ordered = document.Frequencies.OrderByDescending(f => f.Value);
                 var weights = classificator.Decide(ordered.Take(10));
             }
-
         }
     }
 }
