@@ -25,16 +25,15 @@ namespace ProfileCreator
             tfService.CreateIndex(users);
         }
 
-        public void Search(string query, string field)
+        public IEnumerable<DocumentFrequency> Search(string query, string field)
         {
             TermFrequencyService tfService = new TermFrequencyService();
-            tfService.Search(query, field);
+            return tfService.Search(query, field);
         }
 
-        public void GetFrequencies()
+        public IEnumerable<AnalyzedUser> GetFrequencies(IEnumerable<DocumentFrequency> frequencies)
         {
             TermFrequencyService tfService = new TermFrequencyService();
-            IEnumerable<DocumentFrequency> frequencies = tfService.GetTermFrequencies();
 
             FeelingsClassificator classificator = new FeelingsClassificator();
             WordBlocker wordBlocker = new WordBlocker();
@@ -46,14 +45,12 @@ namespace ProfileCreator
                 IEnumerable<Frequency> ordered = document.Frequencies.OrderByDescending(f => f.Value);
                 var weights = classificator.Decide(ordered.Take(10));
 
-                AnalyzedUser user = new AnalyzedUser
+                yield return new AnalyzedUser
                 {
                     Username = document.User,
                     ProfileUrl = document.ProfileUrl,
                     Characteristics = weights.Weights
                 };
-
-                string json = JsonConvert.SerializeObject(user);
             }
         }
     }

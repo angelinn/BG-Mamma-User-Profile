@@ -16,8 +16,8 @@ namespace ConsoleTest
         public static void Main(string[] args)
         {
             ProfileService service = new ProfileService();
-            //service.CreateProfiles(@"C:\temp\users");
-            service.GetFrequencies();
+            service.CreateProfiles(@"C:\temp\users");
+            //service.Search("Minnie", "user");
         }
     }
 }
